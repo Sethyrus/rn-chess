@@ -5,14 +5,14 @@ export const PieceMoves: Record<PieceType, PieceMove> = {
                 const moves = [];
                 const [row, col] = [position.row, position.col];
                 if (row === 6) {
-                    if (!board[row - 1][col].piece) {
+                    if (!board[row - 1][col]) {
                         moves.push({ row: row - 1, col });
-                        if (!board[row - 2][col].piece) {
+                        if (!board[row - 2][col]) {
                             moves.push({ row: row - 2, col });
                         }
                     }
                 } else {
-                    if (!board[row - 1][col].piece) {
+                    if (!board[row - 1][col]) {
                         moves.push({ row: row - 1, col });
                     }
                 }
@@ -23,12 +23,12 @@ export const PieceMoves: Record<PieceType, PieceMove> = {
             possibleMoves: (position, board) => {
                 const moves = [];
                 const [row, col] = [position.row, position.col];
-                if (row === 1 && !board[row + 1][col].piece) {
+                if (row === 1 && !board[row + 1][col]) {
                     moves.push({ row: row + 1, col });
-                    if (!board[row + 2][col].piece) {
+                    if (!board[row + 2][col]) {
                         moves.push({ row: row + 2, col });
                     }
-                } else if (row < 7 && !board[row + 1][col].piece) {
+                } else if (row < 7 && !board[row + 1][col]) {
                     moves.push({ row: row + 1, col });
                 }
                 return moves;
@@ -48,11 +48,11 @@ export const PieceMoves: Record<PieceType, PieceMove> = {
                     let r = position.row + dr;
                     let c = position.col + dc;
                     while (r >= 0 && r < 8 && c >= 0 && c < 8) {
-                        const cell = board[r][c];
-                        if (!cell.piece) {
+                        const piece = board[r][c];
+                        if (!piece) {
                             moves.push({ row: r, col: c });
                         } else {
-                            if (cell.piece.color !== "white") {
+                            if (piece.color !== "white") {
                                 moves.push({ row: r, col: c });
                             }
                             break;
@@ -76,11 +76,11 @@ export const PieceMoves: Record<PieceType, PieceMove> = {
                     let r = position.row + dr;
                     let c = position.col + dc;
                     while (r >= 0 && r < 8 && c >= 0 && c < 8) {
-                        const cell = board[r][c];
-                        if (!cell.piece) {
+                        const piece = board[r][c];
+                        if (!piece) {
                             moves.push({ row: r, col: c });
                         } else {
-                            if (cell.piece.color !== "black") {
+                            if (piece.color !== "black") {
                                 moves.push({ row: r, col: c });
                             }
                             break;
@@ -111,8 +111,8 @@ export const PieceMoves: Record<PieceType, PieceMove> = {
                     const r = position.row + dr;
                     const c = position.col + dc;
                     if (r >= 0 && r < 8 && c >= 0 && c < 8) {
-                        const cell = board[r][c];
-                        if (!cell.piece || cell.piece.color !== "white") {
+                        const piece = board[r][c];
+                        if (!piece || piece.color !== "white") {
                             moves.push({ row: r, col: c });
                         }
                     }
@@ -137,8 +137,8 @@ export const PieceMoves: Record<PieceType, PieceMove> = {
                     const r = position.row + dr;
                     const c = position.col + dc;
                     if (r >= 0 && r < 8 && c >= 0 && c < 8) {
-                        const cell = board[r][c];
-                        if (!cell.piece || cell.piece.color !== "black") {
+                        const piece = board[r][c];
+                        if (!piece || piece.color !== "black") {
                             moves.push({ row: r, col: c });
                         }
                     }
@@ -160,11 +160,11 @@ export const PieceMoves: Record<PieceType, PieceMove> = {
                     let r = position.row + dr;
                     let c = position.col + dc;
                     while (r >= 0 && r < 8 && c >= 0 && c < 8) {
-                        const cell = board[r][c];
-                        if (!cell.piece) {
+                        const piece = board[r][c];
+                        if (!piece) {
                             moves.push({ row: r, col: c });
                         } else {
-                            if (cell.piece.color !== "white") {
+                            if (piece.color !== "white") {
                                 moves.push({ row: r, col: c });
                             }
                             break;
@@ -188,11 +188,11 @@ export const PieceMoves: Record<PieceType, PieceMove> = {
                     let r = position.row + dr;
                     let c = position.col + dc;
                     while (r >= 0 && r < 8 && c >= 0 && c < 8) {
-                        const cell = board[r][c];
-                        if (!cell.piece) {
+                        const piece = board[r][c];
+                        if (!piece) {
                             moves.push({ row: r, col: c });
                         } else {
-                            if (cell.piece.color !== "black") {
+                            if (piece.color !== "black") {
                                 moves.push({ row: r, col: c });
                             }
                             break;
@@ -223,11 +223,11 @@ export const PieceMoves: Record<PieceType, PieceMove> = {
                     let r = position.row + dr;
                     let c = position.col + dc;
                     while (r >= 0 && r < 8 && c >= 0 && c < 8) {
-                        const cell = board[r][c];
-                        if (!cell.piece) {
+                        const piece = board[r][c];
+                        if (!piece) {
                             moves.push({ row: r, col: c });
                         } else {
-                            if (cell.piece.color !== "white") {
+                            if (piece.color !== "white") {
                                 moves.push({ row: r, col: c });
                             }
                             break;
@@ -256,11 +256,11 @@ export const PieceMoves: Record<PieceType, PieceMove> = {
                     let r = position.row + dr;
                     let c = position.col + dc;
                     while (r >= 0 && r < 8 && c >= 0 && c < 8) {
-                        const cell = board[r][c];
-                        if (!cell.piece) {
+                        const piece = board[r][c];
+                        if (!piece) {
                             moves.push({ row: r, col: c });
                         } else {
-                            if (cell.piece.color !== "black") {
+                            if (piece.color !== "black") {
                                 moves.push({ row: r, col: c });
                             }
                             break;
@@ -290,8 +290,8 @@ export const PieceMoves: Record<PieceType, PieceMove> = {
                     const r = position.row + dr;
                     const c = position.col + dc;
                     if (r >= 0 && r < 8 && c >= 0 && c < 8) {
-                        const cell = board[r][c];
-                        if (!cell.piece || cell.piece.color !== "white") {
+                        const piece = board[r][c];
+                        if (!piece || piece.color !== "white") {
                             moves.push({ row: r, col: c });
                         }
                     }
@@ -315,8 +315,8 @@ export const PieceMoves: Record<PieceType, PieceMove> = {
                     const r = position.row + dr;
                     const c = position.col + dc;
                     if (r >= 0 && r < 8 && c >= 0 && c < 8) {
-                        const cell = board[r][c];
-                        if (!cell.piece || cell.piece.color !== "black") {
+                        const piece = board[r][c];
+                        if (!piece || piece.color !== "black") {
                             moves.push({ row: r, col: c });
                         }
                     }

@@ -65,7 +65,7 @@ export default function GameBoard() {
         <View style={{ flexDirection: "column" }}>
             {board.map((rowData, rowIndex) => (
                 <View style={{ flexDirection: "row" }} key={rowIndex}>
-                    {rowData.map((cell, colIndex) => {
+                    {rowData.map((piece, colIndex) => {
                         const defaultColor =
                             (rowIndex + colIndex) % 2 === 0
                                 ? "#f0d9b5"
@@ -95,13 +95,13 @@ export default function GameBoard() {
                                     justifyContent: "center",
                                 }}
                             >
-                                {cell.piece && (
+                                {piece && (
                                     <Text
                                         style={{ fontSize: cellSize * (2 / 3) }}
                                     >
                                         {
-                                            PieceImages[cell.piece.type][
-                                                cell.piece.color
+                                            PieceImages[piece.type][
+                                                piece.color
                                             ]
                                         }
                                     </Text>

@@ -18,15 +18,19 @@ type Piece = {
     hasMoved?: boolean;
 };
 
+type HistoryStep = {
+    movedPiece: Piece;
+    capturedPiece: Piece | null;
+    from: CellPosition;
+    to: CellPosition;
+};
+
 type CellPosition = {
     row: number;
     col: number;
 };
 
-type GameCell = {
-    position: CellPosition;
-    piece: Piece | null;
-};
+type GameCell = Piece | null;
 
 type Game = {
     cells: [
