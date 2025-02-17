@@ -7,7 +7,7 @@ type PieceMove = Record<
     {
         possibleMoves: (
             position: CellPosition,
-            cells: GameBoard
+            board: GameBoard
         ) => CellPosition[];
     }
 >;

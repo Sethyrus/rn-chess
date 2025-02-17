@@ -1,9 +1,18 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Button } from "react-native";
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    Button,
+    useWindowDimensions,
+} from "react-native";
 import { useContext } from "react";
 import { GameContext } from "../providers/gameProvider";
+import { PieceImages } from "@/utils/consts";
 
 export default function GameBoard() {
+    const dimensions = useWindowDimensions();
+    const cellSize = Math.min(dimensions.width, dimensions.height) / 8 - 8;
     const {
         board,
         selectedPosition,
@@ -16,26 +25,38 @@ export default function GameBoard() {
 
     if (!board) {
         return (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center", gap: 16 }}>
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 16,
+                }}
+            >
                 <Text>No game in progress!</Text>
                 <Button title="Start Game" onPress={() => restartGame()} />
             </View>
         );
     }
 
-    const moves = selectedPosition ? availableMoves() : [];
+    const moves = availableMoves();
 
     function handlePress(row: number, col: number) {
         if (!selectedPosition) {
             selectCell({ row, col });
         } else {
-            const isMove =
-                moves.findIndex((m) => m.row === row && m.col === col) !== -1;
-            if (isMove) {
-                movePiece({ row, col });
+            if (selectedPosition.row === row && selectedPosition.col === col) {
                 clearSelection();
             } else {
-                selectCell({ row, col });
+                const isMove =
+                    moves.findIndex((m) => m.row === row && m.col === col) !==
+                    -1;
+                if (isMove) {
+                    movePiece({ row, col });
+                    clearSelection();
+                } else {
+                    selectCell({ row, col });
+                }
             }
         }
     }
@@ -45,6 +66,10 @@ export default function GameBoard() {
             {board.map((rowData, rowIndex) => (
                 <View style={{ flexDirection: "row" }} key={rowIndex}>
                     {rowData.map((cell, colIndex) => {
+                        const defaultColor =
+                            (rowIndex + colIndex) % 2 === 0
+                                ? "#f0d9b5"
+                                : "#b58863";
                         const isSelected =
                             selectedPosition &&
                             selectedPosition.row === rowIndex &&
@@ -59,23 +84,26 @@ export default function GameBoard() {
                                 key={colIndex}
                                 onPress={() => handlePress(rowIndex, colIndex)}
                                 style={{
-                                    width: 40,
-                                    height: 40,
-                                    borderWidth: 1,
-                                    borderColor: "gray",
+                                    width: cellSize,
+                                    height: cellSize,
                                     backgroundColor: isSelected
                                         ? "yellow"
                                         : isAvailableMove
                                         ? "lightgreen"
-                                        : "white",
+                                        : defaultColor,
                                     alignItems: "center",
                                     justifyContent: "center",
                                 }}
                             >
                                 {cell.piece && (
-                                    <Text>
-                                        {cell.piece.color[0].toUpperCase()}
-                                        {cell.piece.type[0].toUpperCase()}
+                                    <Text
+                                        style={{ fontSize: cellSize * (2 / 3) }}
+                                    >
+                                        {
+                                            PieceImages[cell.piece.type][
+                                                cell.piece.color
+                                            ]
+                                        }
                                     </Text>
                                 )}
                             </TouchableOpacity>
