@@ -1,16 +1,15 @@
-import { View, Text, StatusBar } from "react-native";
-import React from "react";
-import { ThemedView } from "@/components/ThemedView";
-import { ThemedText } from "@/components/ThemedText";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, View } from "react-native";
 
-export default function Home() {
-    return (
-        <SafeAreaView>
-            <StatusBar backgroundColor={"#fff"} barStyle={"dark-content"} />
-            <ThemedView>
-                <ThemedText>index</ThemedText>
-            </ThemedView>
-        </SafeAreaView>
-    );
+export default function Index() {
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text>Edit app/index.tsx to edit this screen.</Text>
+    </View>
+  );
 }
