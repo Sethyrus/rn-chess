@@ -7,7 +7,8 @@ type PieceMove = Record<
     {
         possibleMoves: (
             position: CellPosition,
-            board: GameBoard
+            board: GameBoard,
+            avoidLoopMode?: boolean
         ) => CellPosition[];
     }
 >;
@@ -23,6 +24,7 @@ type HistoryStep = {
     capturedPiece: Piece | null;
     from: CellPosition;
     to: CellPosition;
+    promotion?: PieceType; // Nueva propiedad para la promoción
 };
 
 type CellPosition = {

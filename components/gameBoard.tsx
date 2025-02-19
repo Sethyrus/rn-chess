@@ -30,11 +30,13 @@ export default function GameBoard() {
                     flex: 1,
                     justifyContent: "center",
                     alignItems: "center",
-                    gap: 16,
+                    gap: 24,
                 }}
             >
-                <Text>No game in progress!</Text>
-                <Button title="Start Game" onPress={() => restartGame()} />
+                <Text style={{ fontSize: 32, fontWeight: "bold" }}>
+                    aGedrez
+                </Text>
+                <Button title="Iniciar partida" onPress={() => restartGame()} />
             </View>
         );
     }
@@ -99,11 +101,7 @@ export default function GameBoard() {
                                     <Text
                                         style={{ fontSize: cellSize * (2 / 3) }}
                                     >
-                                        {
-                                            PieceImages[piece.type][
-                                                piece.color
-                                            ]
-                                        }
+                                        {PieceImages[piece.type][piece.color]}
                                     </Text>
                                 )}
                             </TouchableOpacity>

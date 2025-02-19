@@ -1,5 +1,6 @@
 import { PieceMoves } from "@/utils/consts";
 import { createContext, ReactNode, useState } from "react";
+import { isKingInCheck } from "@/utils/helpers";
 
 export type GameState = {
     board: GameBoard | null;
@@ -109,7 +110,17 @@ export default function GameProvider({ children }: { children: ReactNode }) {
             board
         );
 
-        return moves;
+        // Filtrar movimientos que pondrían al rey en jaque
+        return moves.filter((move) => {
+            // Crear un tablero temporal con el movimiento aplicado
+            const tempBoard = board.map((row) => [...row]) as GameBoard;
+            // Aplicar el movimiento
+            tempBoard[move.row][move.col] =
+                tempBoard[selectedPosition.row][selectedPosition.col];
+            tempBoard[selectedPosition.row][selectedPosition.col] = null;
+            // Verificar si el rey quedaría en jaque
+            return !isKingInCheck(tempBoard, piece.color);
+        });
     }
 
     function movePiece(to: CellPosition): void {
@@ -123,11 +134,72 @@ export default function GameProvider({ children }: { children: ReactNode }) {
 
         if (!movingPiece) return;
 
+        let promotion: PieceType | undefined;
+
+        // Promoción del peón
+        if (movingPiece.type === "pawn") {
+            // Peón blanco llegando a la primera fila o peón negro llegando a la última fila
+            if (
+                (movingPiece.color === "white" && to.row === 0) ||
+                (movingPiece.color === "black" && to.row === 7)
+            ) {
+                // Por defecto promovemos a reina
+                promotion = "queen";
+                // Actualizar la pieza con la promoción
+                movingPiece.type = promotion;
+            }
+        }
+
+        // Enroque
+        if (movingPiece.type === "king") {
+            // Enroque corto blanco
+            if (
+                selectedPosition.row === 7 &&
+                selectedPosition.col === 4 &&
+                to.row === 7 &&
+                to.col === 6
+            ) {
+                newBoard[7][5] = newBoard[7][7]; // Mover torre
+                newBoard[7][7] = null;
+            }
+            // Enroque largo blanco
+            if (
+                selectedPosition.row === 7 &&
+                selectedPosition.col === 4 &&
+                to.row === 7 &&
+                to.col === 2
+            ) {
+                newBoard[7][3] = newBoard[7][0]; // Mover torre
+                newBoard[7][0] = null;
+            }
+            // Enroque corto negro
+            if (
+                selectedPosition.row === 0 &&
+                selectedPosition.col === 4 &&
+                to.row === 0 &&
+                to.col === 6
+            ) {
+                newBoard[0][5] = newBoard[0][7]; // Mover torre
+                newBoard[0][7] = null;
+            }
+            // Enroque largo negro
+            if (
+                selectedPosition.row === 0 &&
+                selectedPosition.col === 4 &&
+                to.row === 0 &&
+                to.col === 2
+            ) {
+                newBoard[0][3] = newBoard[0][0]; // Mover torre
+                newBoard[0][0] = null;
+            }
+        }
+
         const historyStep: HistoryStep = {
             movedPiece: movingPiece,
             capturedPiece: newBoard[to.row][to.col],
             from: selectedPosition,
             to,
+            promotion,
         };
 
         newBoard[to.row][to.col] = { ...movingPiece, hasMoved: true };
