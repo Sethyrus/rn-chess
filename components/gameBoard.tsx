@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
     View,
     Text,
@@ -13,15 +13,22 @@ import { PieceImages } from "@/utils/consts";
 export default function GameBoard() {
     const dimensions = useWindowDimensions();
     const cellSize = Math.min(dimensions.width, dimensions.height) / 8 - 8;
+
     const {
         board,
         selectedPosition,
+        gameHistory,
         selectCell,
         clearSelection,
         availableMoves,
         movePiece,
         restartGame,
     } = useContext(GameContext);
+
+    const currentTurn = useMemo(() => {
+        const lastMove = gameHistory[gameHistory.length - 1];
+        return lastMove?.movedPiece.color === "white" ? "black" : "white";
+    }, [gameHistory]);
 
     if (!board) {
         return (
@@ -65,6 +72,25 @@ export default function GameBoard() {
 
     return (
         <View style={{ flexDirection: "column" }}>
+            <View style={{ flexDirection: "column" }}>
+                <Text
+                    style={{
+                        fontSize: 18,
+                        textAlign: "center",
+                    }}
+                >
+                    Juegan
+                </Text>
+                <Text
+                    style={{
+                        fontSize: 24,
+                        textAlign: "center",
+                        marginBottom: 20,
+                    }}
+                >
+                    {currentTurn === "white" ? "BLANCAS" : "NEGRAS"}
+                </Text>
+            </View>
             {board.map((rowData, rowIndex) => (
                 <View style={{ flexDirection: "row" }} key={rowIndex}>
                     {rowData.map((piece, colIndex) => {
