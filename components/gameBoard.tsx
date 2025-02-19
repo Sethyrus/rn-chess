@@ -18,11 +18,14 @@ export default function GameBoard() {
         board,
         selectedPosition,
         gameHistory,
+        historyOffset,
         selectCell,
         clearSelection,
         availableMoves,
         movePiece,
         restartGame,
+        historyForward,
+        historyBackward,
     } = useContext(GameContext);
 
     const currentTurn = useMemo(() => {
@@ -135,6 +138,27 @@ export default function GameBoard() {
                     })}
                 </View>
             ))}
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginTop: 12,
+                }}
+            >
+                <Button
+                    title="Deshacer"
+                    disabled={
+                        gameHistory.length === 0 ||
+                        historyOffset === gameHistory.length
+                    }
+                    onPress={historyBackward}
+                />
+                <Button
+                    title="Rehacer"
+                    disabled={historyOffset === 0}
+                    onPress={historyForward}
+                />
+            </View>
         </View>
     );
 }
